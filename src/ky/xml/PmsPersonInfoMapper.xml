@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE mapper
+        PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+        'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='ky.xml.PmsPersonInfoMapper'>
+
+    <resultMap type="ky.entity.PmsPersonInfo" id="resultMap">
+        <result column="id" property="id"/>
+        <result column="adress" property="adress"/>
+        <result column="person_name" property="personName"/>
+        <result column="person_number" property="personNumber"/>
+        <result column="user_id" property="userId"/>
+    </resultMap>
+
+    <!-- 公用的判断条 -->
+    <sql id="configParamSql">
+        <if test="searchBean.id !=null  and  searchBean.id!=0">
+            and obj.id=#{searchBean.id}
+        </if>
+        <if test="searchBean.adress !=null  and  searchBean.adress!=''">
+            and obj.adress=#{searchBean.adress}
+        </if>
+        <if test="searchBean.personName !=null  and  searchBean.personName!=''">
+            and obj.person_name=#{searchBean.personName}
+        </if>
+        <if test="searchBean.personNumber !=null  and  searchBean.personNumber!=''">
+            and obj.person_number=#{searchBean.personNumber}
+        </if>
+        <if test="searchBean.userId !=null  and  searchBean.userId!=0">
+            and obj.user_id=#{searchBean.userId}
+        </if>
+    </sql>
+
+    <select id="selectPage" resultMap="resultMap" parameterType="ky.util.PageView">
+        select A.* from (
+        SELECT obj.* FROM pms_person_info obj
+        <where>
+            <include refid="configParamSql"/>
+        </where>
+        <if test="sort !=null  and  sort!=''">
+            order by obj.${sort} ${order}
+        </if>
+        <if test="sort==null">
+            order by obj.id desc
+        </if>
+        ) A limit #{pageNum},#{pageSize}
+
+    </select>
+
+    <select id="selectList" resultMap="resultMap" parameterType="ky.entity.PmsPersonInfo">
+        select * from pms_person_info
+        <where>
+            <if test="id !=null  and  id!=0">
+                and id=#{id}
+            </if>
+            <if test="adress !=null  and  adress!=''">
+                and adress=#{adress}
+            </if>
+            <if test="personName !=null  and  personName!=''">
+                and person_name=#{personName}
+            </if>
+            <if test="personNumber !=null  and  personNumber!=''">
+                and person_number=#{personNumber}
+            </if>
+            <if test="userId !=null  and  userId!=0">
+                and user_id=#{userId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="ky.entity.PmsPersonInfo">
+
+        <![CDATA[insert into pms_person_info(id,adress,person_name,person_number,user_id)
+		values(#{id,jdbcType=INTEGER},#{adress,jdbcType=VARCHAR},#{personName,jdbcType=VARCHAR},#{personNumber,jdbcType=VARCHAR},#{userId,jdbcType=INTEGER})]]>
+    </insert>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from pms_person_info
+        where id=#{id}
+    </delete>
+
+    <update id='update' parameterType='ky.entity.PmsPersonInfo'>
+        update pms_person_info set
+        id = #{id,jdbcType=INTEGER},
+        adress = #{adress,jdbcType=VARCHAR},
+        person_name = #{personName,jdbcType=VARCHAR},
+        person_number = #{personNumber,jdbcType=VARCHAR},
+        user_id = #{userId,jdbcType=INTEGER}
+        where id=#{id}
+    </update>
+
+    <select id="total" resultType="int" parameterType="ky.util.PageView">
+        select count(*) from pms_person_info obj
+        <where>
+            <include refid="configParamSql"/>
+        </where>
+    </select>
+
+</mapper>
+
