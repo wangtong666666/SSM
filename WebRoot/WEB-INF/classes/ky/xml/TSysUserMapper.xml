@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE mapper
+        PUBLIC '-//mybatis.org//DTD Mapper 3.0//EN'
+        'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace='ky.xml.TSysUserMapper'>
+
+    <resultMap type="ky.entity.TSysUser" id="resultMap">
+        <id column="id" property="id"/>
+        <result column="role_id" property="roleId"/>
+        <result column="role_name" property="roleName"/>
+        <result column="pwd_date" property="pwdDate"/>
+        <result column="email" property="email"/>
+        <result column="true_name" property="trueName"/>
+        <result column="login_name" property="loginName"/>
+        <result column="user_status" property="userStatus"/>
+        <result column="login_pwd" property="loginPwd"/>
+        <result column="mobileno" property="mobileno"/>
+    </resultMap>
+
+    <!-- 公用的判断条 -->
+    <sql id="configParamSql">
+        <if test="searchBean.id !=null  and  searchBean.id!=0">
+            and obj.id like '%${searchBean.id}%'
+        </if>
+        <if test="searchBean.roleId !=null  and  searchBean.roleId!=0">
+            and obj.role_id=#{searchBean.roleId}
+        </if>
+        <if test="searchBean.pwdDate !=null  and  searchBean.pwdDate!=''">
+            and obj.pwd_date=#{searchBean.pwdDate}
+        </if>
+        <if test="searchBean.email !=null  and  searchBean.email!=''">
+            and obj.email=#{searchBean.email}
+        </if>
+        <if test="searchBean.trueName !=null  and  searchBean.trueName!=''">
+            and obj.true_name like '%${searchBean.trueName}%'
+        </if>
+        <if test="searchBean.loginName !=null  and  searchBean.loginName!=''">
+            and obj.login_name like '%${searchBean.loginName}%'
+        </if>
+        <if test="searchBean.userStatus !=null  and  searchBean.userStatus!=0">
+            and obj.user_status=#{searchBean.userStatus}
+        </if>
+        <if test="searchBean.loginPwd !=null  and  searchBean.loginPwd!=''">
+            and obj.login_pwd=#{searchBean.loginPwd}
+        </if>
+        <if test="searchBean.mobileno !=null  and  searchBean.mobileno!=0">
+            and obj.mobileno=#{searchBean.mobileno}
+        </if>
+
+    </sql>
+    <select id="selectPage" resultMap="resultMap" parameterType="ky.util.PageView">
+        SELECT * FROM (SELECT A.*, ROWNUM RN FROM (
+        select * from (
+        select obj.* ,
+        (select tsr.role_name from t_sys_role tsr where tsr.role_id=obj.role_id) as role_name
+        from
+        (SELECT * FROM t_sys_user obj ) obj) obj
+        <where>
+            <include refid="configParamSql"/>
+        </where>
+        <if test="sort !=null  and  sort!=''">
+            order by obj.${sort} ${order}
+        </if>
+        <if test="sort==null">
+            order by obj.id desc
+        </if>
+        )A WHERE ROWNUM &lt;= 1* (#{pageNum}*#{pageSize}))
+        WHERE RN &gt;= (#{pageNum}-1)*#{pageSize}+1
+    </select>
+    <select id="selectList" resultMap="resultMap" parameterType="ky.entity.TSysUser">
+        select obj.id,
+        obj.login_name,
+        obj.true_name,
+        obj.role_id,
+        obj.email,
+        obj.pwd_date,
+        obj.user_status
+
+        from t_sys_user obj
+        <where>
+            <if test="id !=null  and  id!=0">
+                and id=#{id}
+            </if>
+            <if test="roleId !=null  and  roleId!=0">
+                and role_id=#{roleId}
+            </if>
+            <if test="pwdDate !=null  and  pwdDate!=''">
+                and pwd_date=#{pwdDate}
+            </if>
+            <if test="email !=null  and  email!=''">
+                and email=#{email}
+            </if>
+            <if test="trueName !=null  and  trueName!=''">
+                and true_name=#{trueName}
+            </if>
+            <if test="loginName !=null  and  loginName!=''">
+                and login_name=#{loginName}
+            </if>
+            <if test="userStatus !=null  and  userStatus!=0">
+                and user_status=#{userStatus}
+            </if>
+            <if test="loginPwd !=null  and  loginPwd!=''">
+                and login_pwd like '${loginPwd}'
+            </if>
+            <if test="mobileno !=null  and  mobileno!=0">
+                and mobileno=#{mobileno}
+            </if>
+
+        </where>
+    </select>
+
+    <insert id="save" parameterType="ky.entity.TSysUser">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
+            select seq_sys_user.nextval from dual
+        </selectKey>
+        <![CDATA[insert into t_sys_user(role_id,pwd_date,email,true_name,login_name,user_status,login_pwd,mobileno,department_id)
+		values(#{roleId,jdbcType=INTEGER},#{pwdDate,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{trueName,jdbcType=VARCHAR},#{loginName,jdbcType=VARCHAR},#{userStatus,jdbcType=INTEGER},#{loginPwd,jdbcType=VARCHAR},#{mobileno,jdbcType=INTEGER},#{departmentId,jdbcType=VARCHAR})]]>
+    </insert>
+    <!--
+        <delete id="delete" parameterType="java.lang.Integer">
+            delete from t_sys_user
+            where id=#{id}
+        </delete>
+
+        <delete id="deletep" parameterType="java.lang.String">
+            delete from t_sys_user
+            where login_name=#{loginName}
+        </delete>
+    -->
+    <update id='update' parameterType='ky.entity.TSysUser'>
+        update t_sys_user set
+        email = #{email,jdbcType=VARCHAR},
+        true_name = #{trueName,jdbcType=VARCHAR},
+        mobileno = #{mobileno,jdbcType=INTEGER}
+        where login_name=#{loginName,jdbcType=VARCHAR}
+    </update>
+
+
+    <update id='update1' parameterType='ky.entity.TSysUser'>
+        update t_sys_user set
+        login_pwd=#{loginPwd,jdbcType=VARCHAR},
+        pwd_date=#{pwdDate,jdbcType=VARCHAR}
+        where login_name=#{loginName,jdbcType=VARCHAR}
+    </update>
+
+    <select id="total" resultType="int" parameterType="ky.util.PageView">
+        select count(*) from t_sys_user obj
+        <where>
+            <include refid="configParamSql"/>
+        </where>
+    </select>
+
+</mapper>
+

@@ -1,0 +1,178 @@
+.menuA {
+    font-size: 15px;
+    color: #000;
+    text-decoration: none;
+    margin-left: 8px;
+}
+
+.menuDiv li {
+    margin-left: -18px;
+    list-style: none;
+    line-height: 30px;
+}
+
+.menuDiv ul {
+    margin-top: -7px;
+}
+
+.menuLi {
+    background: url('images/04.png') repeat-y;
+}
+
+.formDiv {
+    margin-bottom: 10px;
+    margin-top: -5px;
+    width: 100%;
+    float: left;
+    margin-left: -35px;
+}
+
+}
+.formDiv ul {
+    margin-left: -30px;
+}
+
+.formDiv li {
+    float: left;
+    list-style: none;
+    margin-right: 15px;
+}
+
+.formDiv li input {
+    border: #9CC8F7 1px solid;
+    height: 17px;
+    border-radius: 4px 4px 4px 4px;
+}
+
+.operate {
+    width: 100%
+}
+
+.operate a {
+    margin-right: 12px;
+}
+
+#tb {
+    padding: 5px;
+    height: auto;
+    background-color: #DAEEF5
+}
+
+#formButton {
+    width: 60px;
+    height: 23px;
+    border: #9CC8F7 1px solid;
+    border-radius: 4px 4px 4px 4px;
+    margin-left: 10px;
+}
+
+.weixinMenuTable {
+    width: 95%;
+    border: #AAAAAA solid 1px;
+    margin-top: 15PX;
+}
+
+.weixinMenuTable td {
+    border-bottom: #AAAAAA solid 1px;
+    border-right: #AAAAAA solid 1px;
+    height: 30px;
+    font-size: 15px;
+    text-align: center;
+}
+
+.menu_info {
+    width: 95%;
+    border: #AAAAAA solid 1px;
+    margin-top: 40PX;
+    display: none;
+    margin-bottom: 20px;
+    height: 430px;
+    overflow: auto;
+}
+
+.Menu {
+    margin-bottom: 15px;
+}
+
+.spanText {
+    float: left;
+    width: 15%;
+    font-size: 14px;
+    text-align: right;
+}
+
+.textareaText {
+    overflow: auto;
+    width: 75%;
+    height: 65px;
+    line-height: 20px;
+    font-size: 14px;
+    margin-left: -80px;
+}
+
+.twDiv {
+    width: 95%;
+    border: solid 1px #AAAAAA;
+    height: 330px;
+    overflow: auto;
+}
+
+.picDiv {
+    width: 95%;
+    border: solid 1px #AAAAAA;
+    height: 280px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.MenuOne {
+    margin-bottom: 15px;
+    margin-top: 20px;
+}
+
+#showTwInfo0 {
+    margin-right: 30px;
+    float: right;
+}
+
+#showTwInfo1 {
+    margin-right: 30px;
+    float: right;
+}
+
+.msgClass {
+    color: red;
+}
+
+.msg_text {
+    font-size: 14px;
+    font-weight: bold;
+    float: left;
+    margin-left: 220px;
+    color: green
+}
+
+#required {
+    color: red;
+}
+
+#changepwd {
+    color: blue;
+}
+
+#exit {
+    color: orange;
+    text-decoration: none;
+}
+
+.agengTable tr td {
+    line-height: 35px;
+}
+
+.agengTable tr td INPUT {
+    border: solid 1px #9CC8F7;
+}
+
+.agengTable tr td select {
+    border: solid 1px #9CC8F7;
+}
